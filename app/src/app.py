@@ -5,9 +5,13 @@ from routes.health import health_bp
 from routes.users import users_bp
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
-    app.config.from_object(Config)
+
+    if test_config:
+        app.config.update(test_config)
+    else:
+        app.config.from_object(Config)
 
     db.init_app(app)
 
