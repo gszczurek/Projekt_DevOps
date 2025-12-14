@@ -5,8 +5,7 @@ from models import User
 
 @pytest.fixture
 def app():
-    app = create_app()
-    app.config.update({
+    app = create_app({
         "TESTING": True,
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
         "SQLALCHEMY_TRACK_MODIFICATIONS": False
@@ -25,3 +24,11 @@ def test_health(client):
     assert res.status_code == 200
     assert res.json["status"] == "ok"
 
+def test_create_user(client):
+    payload = {
+        "email": "john@example.com",
+        "name": "John"
+    }
+    res = client.post("/users", json=payload)
+    assert res.status_code == 201
+    assert res.json["email"] == "john@example.com"
