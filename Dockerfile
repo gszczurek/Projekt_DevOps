@@ -7,14 +7,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-COPY requirements.txt .
-
+COPY app/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-COPY src/ ./src/
-COPY alembic.ini /app/
-COPY migrations/ /app/migrations/
+COPY app/src ./src/
+COPY app/alembic.ini ./alembic.ini
+COPY app/migrations ./migrations/
+COPY app/seed ./seed
 
 # TEST
 FROM builder AS test
@@ -23,7 +23,7 @@ ENV PYTHONPATH=/app/src
 
 RUN pip install pytest pytest-flask
 
-RUN pytest src/tests/ --maxfail=1 --disable-warnings -v
+RUN pytest src/tests/ -v
 
 # FINAL
 FROM python:3.12-slim AS final
@@ -31,12 +31,13 @@ FROM python:3.12-slim AS final
 WORKDIR /app
 
 COPY --from=builder /usr/local /usr/local
-COPY --from=builder /app/src/ ./src/
-COPY --from=builder /app/migrations/ ./migrations/
+COPY --from=builder /app/src ./src/
+COPY --from=builder /app/migrations ./migrations/
 COPY --from=builder /app/alembic.ini ./alembic.ini
+COPY --from=builder /app/seed ./seed
 
-ENV PYTHONPATH=/app/src
-ENV FLASK_APP=app
+ENV PYTHONPATH=/app
+ENV FLASK_APP=src
 ENV FLASK_RUN_HOST=0.0.0.0
 
 EXPOSE 5000

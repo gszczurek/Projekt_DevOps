@@ -1,8 +1,8 @@
 from flask import Flask
-from config import Config
-from db import db
-from routes.health import health_bp
-from routes.users import users_bp
+from src.config import Config
+from src.db import db
+from src.routes.health import health_bp
+from src.routes.users import users_bp
 
 
 def create_app(test_config=None):

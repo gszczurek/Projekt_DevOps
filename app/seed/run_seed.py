@@ -3,15 +3,14 @@ import time
 import csv
 import json
 import logging
-from datetime import datetime
 from flask import Flask
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import text
 
-from db import db
-from models import User
+from src.db import db
+from src.models import User
 
-OUTPUT_DIR = '/app/src/seed/output'
+OUTPUT_DIR = '/app/seed/output'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 logging.basicConfig(
@@ -29,7 +28,7 @@ db.init_app(app)
 
 sample_users = [
     {"name": "Alice", "email": "alice@example.com"},
-    {"name": "Bob", "email": "bob@example.com"},
+    {"name": "Bobaa", "email": "bobaa@example.com"},
     {"name": "Charlie", "email": "charlie@example.com"},
     {"name": "David", "email": "david@example.com"},
     {"name": "Eve", "email": "eve@example.com"},

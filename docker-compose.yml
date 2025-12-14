@@ -38,14 +38,14 @@ services:
       context: .
       dockerfile: Dockerfile
       target: final
-    working_dir: /app/src
+    working_dir: /app
     depends_on:
       migration_runner:
         condition: service_completed_successfully
     networks:
       - back_net
     volumes:
-      - ./seed_output/:/app/src/seed/output
+      - ./app/seed_output/:/app/seed/output
     environment:
       DATABASE_URL: postgresql://postgres:root123@db:5432/app_db
     command: python -m seed.run_seed
@@ -56,12 +56,12 @@ services:
       context: .
       dockerfile: Dockerfile
       target: final
-    working_dir: /app/src
+    working_dir: /app
     depends_on:
       seed_runner:
         condition: service_completed_successfully
     environment:
-      FLASK_APP: app
+      FLASK_APP: src.app
       FLASK_RUN_HOST: 0.0.0.0
     networks:
       - front_net
