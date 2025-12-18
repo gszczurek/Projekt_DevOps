@@ -23,7 +23,9 @@ ENV PYTHONPATH=/app/src
 
 RUN pip install pytest pytest-flask
 
-RUN pytest src/tests/ -v
+COPY app/tests ./tests
+
+RUN pytest tests -v
 
 # FINAL
 FROM python:3.12-slim AS final
