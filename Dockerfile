@@ -19,7 +19,7 @@ COPY app/seed ./seed
 # TEST
 FROM builder AS test
 
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app/src
 
 RUN pip install pytest pytest-flask
 
